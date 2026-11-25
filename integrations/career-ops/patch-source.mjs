@@ -118,6 +118,43 @@ export function patchPlan(root) {
     return text.slice(0, from) + '            Drop a Markdown or text file, or convert a PDF. PDF conversion sends the extracted text to the configured AI provider through LiteLLM. Review the preview before saving.{" "}' +
       '\n            <a href="/vacancies/index.html" className="text-brand-text underline">Browse Python vacancies</a>' + text.slice(end);
   });
+  edit("web/src/components/inbox/shortlist-tray.tsx", (text) => {
+    text = 'import { pilotRunError } from "@/lib/pilot-policy.mjs";\n' + text.replace('"use client";', "");
+    text = '"use client";\n' + text;
+    text = replaceOnce(text, "  onScore: () => void;", "  onScore: (inputs: Record<string, string>) => void;", "inbox score inputs");
+    text = replaceOnce(text, "  if (items.length === 0) return null;", `  const [descriptions, setDescriptions] = useState<Record<string, string>>({});
+  if (items.length === 0) return null;
+  const inputs: Record<string, string> = {};
+  for (const item of items) {
+    const body = (descriptions[item.url] ?? "").trim();
+    const input = ["URL: " + item.url, "Company: " + item.company, "Role: " + item.role, "", body].join("\\n");
+    if (!pilotRunError("evaluate", body) && !pilotRunError("evaluate", input)) inputs[item.url] = input;
+  }
+  const ready = items.every((item) => Boolean(inputs[item.url]));`, "inbox JD validation");
+    text = replaceOnce(text, "              <EvaluationOptions ", `              {items.map((it) => <div key={it.url} className="mb-4">
+                <label className="block text-sm font-medium">
+                  Full job description · {it.company} · {it.role}
+                  <textarea rows={4} maxLength={60000} value={descriptions[it.url] ?? ""}
+                    onChange={(e) => setDescriptions({ ...descriptions, [it.url]: e.target.value })}
+                    placeholder="Paste the full posting, including duties and requirements."
+                    className="mt-1 block w-full rounded-lg border border-border bg-background p-2 text-sm" />
+                </label>
+                {/^(https?):\\/\\//i.test(it.url) && <a href={it.url} target="_blank" rel="noreferrer" className="text-xs text-brand-text underline">Open original posting</a>}
+              </div>)}
+              <EvaluationOptions `, "inbox JD inputs");
+    text = replaceOnce(text, "hasCli={hasCli} onCancel=", "hasCli={hasCli} ready={ready} onCancel=", "inbox ready state");
+    text = replaceOnce(text, "setConfirming(false); onScore();", "if (ready) { setConfirming(false); onScore(inputs); setDescriptions({}); }", "inbox start with text");
+    text = replaceOnce(text, "  hasCli,\n  onCancel,", "  hasCli,\n  ready,\n  onCancel,", "inbox ready prop");
+    text = replaceOnce(text, "  hasCli: boolean;\n  onCancel:", "  hasCli: boolean;\n  ready: boolean;\n  onCancel:", "inbox ready prop type");
+    return replaceOnce(text, "        onClick={onConfirm}", "        disabled={!ready}\n        onClick={onConfirm}", "inbox confirm validation");
+  });
+  edit("web/src/components/inbox/inbox-triage.tsx", (text) => {
+    text = replaceOnce(text, "  const scoreShortlist = () => {", "  const scoreShortlist = (inputs: Record<string, string>) => {", "inbox evaluation inputs");
+    text = replaceOnce(text, 'input: it.url, page: "/pipeline"', 'input: inputs[it.url], page: "/pipeline"', "inbox score uses pasted content");
+    return replaceOnce(text, "      const ex = best.get(j.input);\n      if (!ex || j.startedAt > ex.startedAt) best.set(j.input, j);", `      const url = /^URL: (https?:\\/\\/[^\\s]+)\\r?\\n/.exec(j.input)?.[1] ?? j.input;
+      const ex = best.get(url);
+      if (!ex || j.startedAt > ex.startedAt) best.set(url, j);`, "keep score badges linked to their posting");
+  });
   edit("web/src/components/quick-evaluate.tsx", () => fs.readFileSync(path.join(here, "patches/quick-evaluate.tsx"), "utf8"));
   edit("web/src/components/keyword-coverage.tsx", () => fs.readFileSync(path.join(here, "patches/fit-panel.tsx"), "utf8"));
   edit("web/src/app/api/keyword-match/route.ts", () => fs.readFileSync(path.join(here, "patches/fit-route.ts"), "utf8"));

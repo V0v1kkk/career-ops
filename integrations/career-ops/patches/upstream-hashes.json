@@ -25,6 +25,8 @@
   "web/src/components/explore/schedule-job-action.tsx": "9dc910dc450d07d76650168764f76aaafda86a852a71dda1f6732ac93ce0c847",
   "web/src/components/home/first-run-home.tsx": "7bf7405758af7594b8643be632321c3322ca7649910c636bbcd20fa3a0f090e8",
   "web/src/components/home/today-dashboard.tsx": "5704b45633bf4c6b35d733df7342e64fe516fdce9dd649003a4ccac36505ba1d",
+  "web/src/components/inbox/inbox-triage.tsx": "ce170ab7b96e9070dc9a187b1cf2c2b6a77c63d9605d8eb7d8891374dbcad91e",
+  "web/src/components/inbox/shortlist-tray.tsx": "5de2a00e4db086fbe7ac24fd84aacd439b9a9323ae869c8759e818a6f12fd148",
   "web/src/components/keyword-coverage.tsx": "3f0dda00f8359b4083ba21d55d53ca5d7cf8ae295974a1e843b238d9c6e5b876",
   "web/src/components/quick-evaluate.tsx": "dbac5924f35952498b142a1d05ecb4aa4125f985b740e40bdfc296f48ddfd4f7",
   "web/src/components/report-view.tsx": "6341fcd67bf1a5e3bbdb037cda0c11925ef97623f7cca85b750345e9a6923942",
