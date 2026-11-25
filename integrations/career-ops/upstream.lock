@@ -1,0 +1,4 @@
+career_ops_commit=9170fed51af6894753a9f520074529d15e38a004
+career_ops_archive_sha256=31269350d74d62d33a93fc6b950f770569c661c16a64c657f31fcfcd0f94cd04
+playwright_image=mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+codex_npm_version=0.166.0

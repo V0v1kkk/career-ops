@@ -1,0 +1,35 @@
+# Real public sources for an explicitly requested read-only test.
+# Candidate identity and preferences remain entirely synthetic.
+title_filter:
+  positive: ["python", "backend", "back-end", "back end"]
+  negative: ["word:staff", "word:principal", "head of", "director"]
+
+location_filter:
+  allow: ["Prague", "Praha"]
+  block: []
+  block_hard: []
+  strict: true
+  remote_title_fallback: false
+
+scan_history:
+  recheck_after_days: 30
+  dedup_include_location: true
+
+preferred_languages: [en, cs]
+tracked_companies: []
+search_queries: []
+
+job_boards:
+  - name: "Jobs.cz — Prague Python pilot"
+    provider: jobscz
+    careers_url: "https://www.jobs.cz/prace/praha/?q%5B%5D=python"
+    enabled: true
+    jobscz:
+      keywords: ["python"]
+      location: praha
+    max_pages: 2
+  - name: "Python.org Jobs — optional fallback"
+    provider: pythonorg
+    careers_url: "https://www.python.org/jobs/"
+    enabled: false
+    notes: "Disabled by default. Enable explicitly; strict Prague filtering still applies and may produce no results."

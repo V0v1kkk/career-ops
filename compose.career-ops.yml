@@ -1,0 +1,94 @@
+name: career-ops
+x-career-ops-image: &career-image ${CAREER_OPS_IMAGE:-localai/career-ops:9170fed-eu-fit}
+services:
+  career-ops-web:
+    image: *career-image
+    build:
+      context: ./integrations/career-ops
+      target: app
+    user: "1000:1000"
+    init: false
+    restart: "no"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./integrations/career-ops/launcher/seccomp-codex.json
+    pids_limit: 512
+    mem_limit: 4g
+    shm_size: 1gb
+    environment:
+      CAREER_OPS_WEB_ALLOWED_HOSTS: "career-ops-web,${CAREER_OPS_LAN_IP:?Use --env-file runtime/career-ops/compose.env}"
+      CAREER_OPS_PDF_SHARED: "1"
+      TZ: Europe/Prague
+    volumes:
+      - ./runtime/career-ops/${CAREER_OPS_DATA_SUBDIR:-real-data}:/data
+      - ./runtime/career-ops/${CAREER_OPS_STATE_SUBDIR:-real-state}:/state
+      - ./runtime/career-ops/discovery/public:/opt/career-ops/web/public/vacancies:ro
+    secrets:
+      - litellm_key
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,mode=1777,size=536870912
+      - /opt/career-ops/web/.next/cache:uid=1000,gid=1000,mode=0700,size=134217728
+    networks: [web, litellm]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://career-ops-web:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  career-ops-search:
+    image: *career-image
+    profiles: [search]
+    user: "1000:1000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: "no"
+    network_mode: bridge
+    pids_limit: 96
+    mem_limit: 1g
+    environment:
+      TZ: Europe/Prague
+    entrypoint: [node, /opt/pilot-integration/discovery/search.mjs]
+    command: []
+    volumes:
+      - ./runtime/career-ops/discovery:/results
+      - ./integrations/career-ops/discovery:/opt/pilot-integration/discovery:ro
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,mode=1777,size=67108864
+
+  gateway:
+    image: caddy:2-alpine@sha256:70b3180738b46cd88e49b300d790ae448a0aca3f58edef0f000bb57d619a9ab3
+    user: "1000:1000"
+    restart: "no"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 256m
+    ports:
+      - "${CAREER_OPS_LAN_IP}:8443:8443"
+    volumes:
+      - ./runtime/career-ops/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./runtime/career-ops/caddy-data:/data
+      - ./runtime/career-ops/caddy-config:/config
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,mode=1777,size=16777216
+    networks: [web, edge]
+    depends_on:
+      career-ops-web:
+        condition: service_healthy
+
+secrets:
+  litellm_key:
+    file: ./runtime/career-ops/secrets/litellm_key
+
+networks:
+  edge: {}
+  web:
+    internal: true
+  litellm:
+    external: true
+    name: localai_ollama-docker

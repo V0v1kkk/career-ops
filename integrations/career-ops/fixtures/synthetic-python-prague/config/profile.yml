@@ -1,0 +1,79 @@
+# SYNTHETIC TEST PROFILE. All identity and career facts are fictional.
+# Schema follows upstream config/profile.example.yml at d5873cc.
+candidate:
+  full_name: "Demo Candidate Python-01"
+  title: "Python Backend Developer — SYNTHETIC TEST PROFILE"
+  email: "python-demo@example.com"
+  years_of_experience: 3.8
+  phone: ""
+  location: "Prague, Czechia"
+  linkedin: ""
+  portfolio_url: "https://example.com/synthetic-python-01"
+  github: "https://example.com/synthetic-python-01/code"
+  twitter: ""
+  photo: ""
+
+target_roles:
+  primary:
+    - "Python Backend Developer"
+    - "Python Software Engineer"
+  archetypes:
+    - name: "Python Backend Developer"
+      level: "Mid-level"
+      fit: "primary"
+    - name: "Backend Engineer"
+      level: "Junior/Mid-level"
+      fit: "secondary"
+
+narrative:
+  headline: "SYNTHETIC TEST PROFILE — Python backend developer focused on practical APIs and testing"
+  exit_story: "Fictional test scenario: seeking a Python backend role with time for testing and learning; no reason for leaving a real employer is implied."
+  superpowers:
+    - "FastAPI and Django REST Framework APIs"
+    - "PostgreSQL query debugging"
+    - "pytest integration tests"
+  proof_points:
+    - name: "Demo Apricot Systems order-search endpoint"
+      hero_metric: "Reduced p95 latency by 34%"
+    - name: "Demo Apricot Systems nightly import"
+      hero_metric: "Reduced runtime from 18 minutes to 6 minutes"
+
+compensation:
+  target_range: "70,000-85,000 CZK gross per month — synthetic test preference, not market research"
+  currency: "CZK"
+  minimum: "60,000 CZK gross per month — synthetic test preference"
+  location_flexibility: "Prague hybrid up to two office days per week; remote if hiring in Czechia is explicit"
+
+location:
+  country: "Czechia"
+  city: "Prague"
+  timezone: "Europe/Prague"
+  visa_status: "Synthetic fixture assumption: authorized in Czechia without sponsorship"
+  authorized_in: ["Czechia"]
+  needs_sponsorship: false
+
+language:
+  output: en
+
+spend_tier: standard
+page_format: a4
+cv:
+  template: pilot-compact
+  output_format: html
+  max_pages: 1
+  strict_pages: true
+
+cover_letter:
+  notice_period_days: 30
+  primary_domain: "internal order-management and inventory tools"
+
+follow_ups:
+  enabled: false
+
+scan:
+  extractor: cli
+  timeout_seconds: 180
+
+# One-page pilot layout: renderer applies margin without changing CV text.
+style:
+  margin: "0.4in"

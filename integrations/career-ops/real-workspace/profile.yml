@@ -1,0 +1,16 @@
+candidate:
+  location: Prague, Czechia
+target_roles:
+  primary: [Python Developer, Python Backend Engineer]
+location:
+  country: Czechia
+  city: Prague
+  timezone: Europe/Prague
+language:
+  output: en
+page_format: a4
+cv:
+  template: pilot-compact
+  output_format: html
+follow_ups:
+  enabled: false

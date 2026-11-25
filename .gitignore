@@ -310,3 +310,6 @@ data/interview-prep/
 .next/
 web/.next/
 web/out/
+
+# Private Docker pilot workspace, keys, CA and generated job materials
+/runtime/career-ops/

@@ -1,0 +1,46 @@
+{
+  "fixture_id": "synthetic-python-prague-v1",
+  "classification": "Entirely fictional QA reference; no real candidate",
+  "as_of": "2026-11-04",
+  "must_remain_visible_in_documents": ["SYNTHETIC TEST PROFILE", "Demo Candidate Python-01"],
+  "identity": {
+    "name": "Demo Candidate Python-01",
+    "email": "python-demo@example.com",
+    "location": "Prague, Czechia",
+    "portfolio": "https://example.com/synthetic-python-01"
+  },
+  "employment": [
+    {
+      "employer": "Demo Apricot Systems",
+      "title": "Python Backend Developer",
+      "dates": "November 2024-Present",
+      "metrics": [
+        {"value": "34%", "meaning": "reduction in order-search endpoint p95 latency"},
+        {"from": "18 minutes", "to": "6 minutes", "meaning": "nightly import runtime"},
+        {"value": "16", "meaning": "integration tests added for authentication, validation and database error handling"}
+      ]
+    },
+    {
+      "employer": "Demo Paperplane Tools",
+      "title": "Junior Python Developer",
+      "dates": "January 2023-October 2024",
+      "metrics": [{"from": "62%", "to": "84%", "meaning": "backend test coverage"}]
+    }
+  ],
+  "education": {"degree": "BSc Software Development", "institution": "Demo Institute of Software Studies", "dates": "2019-2022"},
+  "supported_skills": ["Python", "FastAPI", "Django", "Django REST Framework", "REST APIs", "SQL", "PostgreSQL", "SQLite", "CSV processing", "pytest", "unit tests", "integration tests", "Docker", "Git", "GitHub Actions", "Linux", "code review"],
+  "languages": {"English": "B2", "Czech": "A2"},
+  "authorization_assumption": "Czechia only, no sponsorship needed there; no authorization claimed elsewhere",
+  "unsupported_positive_claims": ["professional Kubernetes", "AWS", "Kafka", "Terraform", "professional Go", "machine learning", "people management", "production on-call", "Czech C1", "seven years of experience", "senior or staff job history", "commercial adoption of Demo Reading Queue"],
+  "checks": [
+    "Check employers, titles and dates; equivalent date formatting is allowed.",
+    "A tailored CV may omit irrelevant facts, but any retained metric must keep its meaning and employer.",
+    "Do not convert 62%-to-84% coverage into a 22% relative improvement; it is a 22 percentage-point increase.",
+    "Do not reassign the latency/import metrics to the prior employer.",
+    "Mentioning an unsupported skill as a gap or learning goal is allowed; claiming experience is not.",
+    "The matched JD should expose relevant evidence; there is no predetermined correct numeric fit score.",
+    "The gaps JD should flag seniority, technology, Czech-language and office-attendance mismatches.",
+    "No application is sent, and the tracker must not say Applied merely because documents were generated.",
+    "Inspect rendered PDF visually and verify its text layer after the humanizer pass."
+  ]
+}

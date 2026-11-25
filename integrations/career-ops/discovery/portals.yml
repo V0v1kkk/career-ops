@@ -1,0 +1,46 @@
+# Public search parameters only. This file also supplies the web workspace's geography policy.
+title_filter:
+  positive: ["python", "django", "fastapi", "flask", "backend", "back-end", "software engineer", "software developer"]
+location_filter:
+  allow: [Prague, Praha, Czechia, Czech Republic, CZ, Europe, European Union, EU, EEA, EMEA, Worldwide, Anywhere, Global, Remote]
+  strict: true
+  remote_title_fallback: false
+  workplace_policy:
+    onsite_locations: [Prague, Praha]
+    onsite_countries: [CZ]
+    remote_countries: [CZ]
+    remote_regions: [Europe, European Union, EU, EEA, EMEA, Worldwide, Anywhere, Global]
+search_queries: []
+tracked_companies:
+  - {name: Supabase, provider: ashby, careers_url: "https://jobs.ashbyhq.com/supabase"}
+  - {name: ElevenLabs, provider: ashby, careers_url: "https://jobs.ashbyhq.com/ElevenLabs"}
+  - {name: Canonical, provider: greenhouse, careers_url: "https://job-boards.greenhouse.io/canonical"}
+  - {name: Grafana Labs, provider: greenhouse, careers_url: "https://job-boards.greenhouse.io/grafanalabs", enabled: false}
+  - {name: Apify, provider: ashby, careers_url: "https://jobs.ashbyhq.com/apify"}
+  - {name: n8n, provider: ashby, careers_url: "https://jobs.ashbyhq.com/n8n", enabled: false}
+job_boards:
+  - name: StartupJobs.cz
+    provider: startupjobscz
+    careers_url: https://www.startupjobs.cz/nabidky
+    queries: [{skills: [python]}, {query: Python}, {skills: [django]}, {query: FastAPI}, {query: Python, seniorities: [medior, senior]}]
+    max_pages: 6
+  - {name: Hacker News Hiring, provider: hackernews, careers_url: "https://news.ycombinator.com/submitted?id=whoishiring"}
+  - name: Jobs.cz celá ČR
+    provider: jobscz
+    careers_url: https://www.jobs.cz/prace/
+    jobscz: {keywords: [python, django, fastapi, backend vývojář]}
+    national_remote: true
+    max_pages: 12
+  - {name: Himalayas, provider: himalayas, careers_url: "https://himalayas.app/jobs", max_pages: 3}
+  - {name: Remotive, provider: remotive, careers_url: "https://remotive.com/remote-jobs", enabled: false}
+  - {name: Working Nomads, provider: workingnomads, careers_url: "https://www.workingnomads.com/jobs"}
+  - {name: We Work Remotely, provider: weworkremotely, careers_url: "https://weworkremotely.com"}
+  - {name: Remote OK, provider: remoteok, careers_url: "https://remoteok.com", enabled: false}
+  - {name: Jobicy, provider: jobicy, careers_url: "https://jobicy.com/jobs", tag: python, max_pages: 2}
+  - {name: Python.org, provider: pythonorg, careers_url: "https://www.python.org/jobs/"}
+  - {name: Jobs.cz, provider: jobscz, careers_url: "https://www.jobs.cz/prace/praha/", jobscz: {keywords: [python], location: praha}, max_pages: 2}
+  - {name: Prace.cz, provider: pracecz, careers_url: "https://www.prace.cz/nabidky/praha/", pracecz: {keywords: [python], location: praha}, max_pages: 2}
+  - {name: No Fluff Jobs, provider: nofluffjobs, careers_url: "https://nofluffjobs.com/cz", region: cz, language: cs-CZ, currency: CZK, search: python, page_size: 50, max_pages: 2, enabled: false}
+  - {name: Just Join IT, provider: justjoin, careers_url: "https://justjoin.it/job-offers/all-locations", page_size: 50, max_pages: 2, enabled: false}
+  - {name: Landing.jobs, provider: landingjobs, careers_url: "https://landing.jobs/jobs", enabled: false}
+  - {name: Arbeitnow, provider: arbeitnow, careers_url: "https://www.arbeitnow.com", max_pages: 3, enabled: false}

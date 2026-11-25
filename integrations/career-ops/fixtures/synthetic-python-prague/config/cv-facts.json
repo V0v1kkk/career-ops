@@ -1,0 +1,13 @@
+{
+  "allow_metrics": [],
+  "allow_facts": [],
+  "forbidden_phrases": [
+    "AWS certified",
+    "Czech native speaker",
+    "fluent in Czech",
+    "led a team of",
+    "millions of users",
+    "Fortune 500"
+  ],
+  "warn_phrases": []
+}
