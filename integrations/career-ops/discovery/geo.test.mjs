@@ -2,6 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { classify } from './collect.mjs';
 
+test('Jobs.cz pagination sends only its assigned frontend cookie to the search origin', async () => {
+  const { jobsCzSession } = await import('./czech-search.mjs');
+  const sent = [];
+  const session = jobsCzSession({ fetchResponse: async (_url, options) => {
+    sent.push(options.headers.cookie);
+    const headers = new Headers();
+    headers.append('Set-Cookie', 'beta_bucket=A; Path=/');
+    headers.append('Set-Cookie', 'JOBSSID=unused; Path=/');
+    return new Response('ok', { headers });
+  } });
+  await session.fetchText('https://www.jobs.cz/prace/', {});
+  await session.fetchText('https://www.jobs.cz/prace/?page=2', {});
+  await assert.rejects(session.fetchText('https://example.org/', {}), /origin/);
+  assert.deepEqual(sent, [undefined, 'beta_bucket=A']);
+});
+
 const board = { name: 'Himalayas', provider: 'himalayas' };
 const python = { company: 'Example', title: 'Python Backend Engineer', url: 'https://example.com/jobs/41' };
 test('a city requirement in the employer text overrides a Czech or EU board label', () => {

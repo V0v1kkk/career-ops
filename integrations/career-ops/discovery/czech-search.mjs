@@ -3,6 +3,22 @@ import { htmlToText } from '/opt/career-ops/providers/_html-to-text.mjs';
 
 // Preserve the upstream paging, retries and deduplication. Its mapper drops the
 // remote badges. Record them from the exact same result card before mapping.
+// Jobs.cz assigns the search frontend with a first-party rollout cookie.
+// Keep its own assignment stable while paging the public results.
+export function jobsCzSession(ctx) {
+  let bucket;
+  return { ...ctx, fetchText: async (url, opts) => {
+    if (new URL(url).origin !== 'https://www.jobs.cz') throw new Error('Unexpected search origin');
+    const response = await ctx.fetchResponse(url, { ...opts, headers: bucket ? { cookie: bucket } : {},
+      redirect: 'error' });
+    for (const cookie of response.headers.getSetCookie()) {
+      const pair = /^beta_bucket=[a-zA-Z0-9_.%-]+(?=;|$)/.exec(cookie);
+      if (pair) bucket = pair[0];
+    }
+    return response.text();
+  } };
+}
+
 export async function nationalJobsCz(entry, ctx) {
   const signals = new Map();
   const capture = { ...ctx, fetchText: async (url, opts) => {

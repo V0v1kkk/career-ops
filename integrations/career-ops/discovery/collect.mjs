@@ -8,7 +8,7 @@ import { parseHimalayasResponse } from '/opt/career-ops/providers/himalayas.mjs'
 import { htmlToText } from '/opt/career-ops/providers/_html-to-text.mjs';
 
 import { startupJobsCz } from './startupjobs-cz.mjs';
-import { nationalJobsCz } from './czech-search.mjs';
+import { nationalJobsCz, jobsCzSession } from './czech-search.mjs';
 import { hnHiring } from './hn-hiring.mjs';
 
 const yaml = createRequire('/opt/career-ops/package.json')('js-yaml');
@@ -98,11 +98,11 @@ export async function collect(entry) {
     let rows, read;
     if (entry.provider === 'startupjobscz') ({ rows, read } = await startupJobsCz(entry, ctx, notes, relevantTitle));
     else if (entry.provider === 'hackernews') rows = await hnHiring(entry, ctx, notes, classify);
-    else if (entry.national_remote) rows = await nationalJobsCz(entry, ctx);
+    else if (entry.national_remote) rows = await nationalJobsCz(entry, jobsCzSession(ctx));
     else if (entry.provider === 'himalayas') rows = await searchHimalayas(ctx, entry, notes);
     else {
       const adapter = (await import('/opt/career-ops/providers/' + entry.provider + '.mjs')).default;
-      rows = await adapter.fetch(entry, ctx);
+      rows = await adapter.fetch(entry, entry.provider === 'jobscz' ? jobsCzSession(ctx) : ctx);
     }
     if (!Array.isArray(rows)) throw new Error('Adapter returned an unexpected result');
     const truncation = boardTruncation(rows);
