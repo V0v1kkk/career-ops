@@ -33,6 +33,19 @@ export function patchPlan(root) {
   const replace = (file, before, after) => edit(file, (text) => replaceOnce(text, before, after, file));
 
   edit("modes/cover.md", patchCoverMode);
+  edit("web/src/lib/apply/cover.ts", (text) => {
+    text = 'import { reportNumberFor } from "@/lib/apply-checklist.mjs";\nimport { pdfPathStatusForReport, readReport } from "@/lib/career-ops";\n' + text;
+    return replaceOnce(text, "  if (n && !app) return null;", `  if (n && !app) return null;
+  if (n && app) {
+    const number = reportNumberFor(n, app, readReport(n)?.file ?? null);
+    if (number) {
+      const cover = await pdfPathStatusForReport(String(number), "cover");
+      if (cover.status === "found") return cover.path;
+      if (cover.status !== "not-found") return null;
+    }
+  }
+  // Older letters without manifest entries keep the company and role fallback.`, "indexed cover lookup");
+  });
   edit("web/src/proxy.ts", (text) => {
     text = 'import { PILOT_NOTICE, pilotBlockedRequest } from "@/lib/pilot-policy.mjs";\n' + text;
     return replaceOnce(text, "  return NextResponse.next();", '  if (pilotBlockedRequest(req.nextUrl.pathname, req.method)) {\n    return NextResponse.json({ code: "PILOT_DISABLED", error: PILOT_NOTICE }, { status: 403 });\n  }\n  return NextResponse.next();', "proxy gate");

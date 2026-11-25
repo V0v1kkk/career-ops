@@ -1,5 +1,5 @@
 name: career-ops
-x-career-ops-image: &career-image ${CAREER_OPS_IMAGE:-localai/career-ops:9170fed-eu-fit}
+x-career-ops-image: &career-image ${CAREER_OPS_IMAGE:-localai/career-ops:9170fed-eu-cover-index}
 services:
   career-ops-web:
     image: *career-image
